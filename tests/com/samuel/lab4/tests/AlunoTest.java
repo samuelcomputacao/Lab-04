@@ -3,7 +3,6 @@ package com.samuel.lab4.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,12 +23,12 @@ public class AlunoTest {
 	public void TestContrutorMatriculaNull() throws CampoVazioException {
 		aluno = new Aluno(null, "Samuel", "Computacao");
 	}
-	
+
 	@Test(expected = CampoVazioException.class)
 	public void TestContrutorNomeNull() throws CampoVazioException {
 		aluno = new Aluno("111", null, "Computacao");
 	}
-	
+
 	@Test(expected = CampoVazioException.class)
 	public void TestContrutorCursoNull() throws CampoVazioException {
 		aluno = new Aluno("111", "Samuel", null);
@@ -42,47 +41,28 @@ public class AlunoTest {
 	}
 
 	@Test
-	public void testEquals() {
-		Aluno alunoTest = null;
-		try {
-			alunoTest = new Aluno("111", "Samuel", "Computacao");
-			assertTrue(alunoTest.equals(aluno));
-		} catch (CampoVazioException e) {
-			fail("Erro");
-		}
+	public void testEquals() throws CampoVazioException {
+		Aluno alunoTest = new Aluno("111", "Samuel", "Computacao");
+		assertTrue(alunoTest.equals(aluno));
 	}
 
 	@Test
-	public void testEqualsMatricula() {
-		Aluno alunoTest = null;
-		try {
-			alunoTest = new Aluno("222", "Samuel", "Computacao");
-			assertFalse(alunoTest.equals(aluno));
-		} catch (CampoVazioException e) {
-			fail("Erro");
-		}
+	public void testEqualsMatricula() throws CampoVazioException {
+		Aluno alunoTest = new Aluno("222", "Samuel", "Computacao");
+		assertFalse(alunoTest.equals(aluno));
+
 	}
 
 	@Test
-	public void testEqualsNome() {
-		Aluno alunoTest = null;
-		try {
-			alunoTest = new Aluno("111", "Antônio", "Computacao");
-			assertTrue(alunoTest.equals(aluno));
-		} catch (CampoVazioException e) {
-			fail("Erro");
-		}
+	public void testEqualsNome() throws CampoVazioException {
+		Aluno alunoTest = new Aluno("111", "Antônio", "Computacao");
+		assertTrue(alunoTest.equals(aluno));
 	}
 
 	@Test
-	public void testEqualsCurso() {
-		Aluno alunoTest = null;
-		try {
-			alunoTest = new Aluno("111", "Samuel", "Eng. Elétrica");
-			assertTrue(alunoTest.equals(aluno));
-		} catch (CampoVazioException e) {
-			fail("Erro");
-		}
+	public void testEqualsCurso() throws CampoVazioException {
+		Aluno alunoTest = new Aluno("111", "Samuel", "Eng. Elétrica");
+		assertTrue(alunoTest.equals(aluno));
 	}
 
 	@Test
