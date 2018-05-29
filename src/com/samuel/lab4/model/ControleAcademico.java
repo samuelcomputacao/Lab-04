@@ -249,20 +249,27 @@ public class ControleAcademico {
 		return true;
 	}
 
-	public List<String> listarGrupo(String nomeGrupo) {
-		Grupo grupo = buscaGrupo(nomeGrupo);
-		if (grupo != null) {
-			return grupo.listaAlocados();
+	public List<String> listarGrupo(String nomeGrupo) throws CampoVazioException {
+		if(nomeGrupo==null) {
+			throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
 		}
-		return null;
+		Grupo grupo = buscaGrupo(nomeGrupo);
+		if (grupo == null) {
+			throw new GrupoNaoCadastrado();
+		}
+		return grupo.listaAlocados();
 	}
 
-	public void registrarAlunoResposta(String matricula) {
+	public boolean registrarAlunoResposta(String matricula) throws CampoVazioException {
+		if(matricula==null) {
+			throw new CampoVazioException("CAMPO MATRÍCULA VAZIO");
+		}
 		if (!this.alunos.containsKey(matricula)) {
 			throw new AlunoNaoCadastrado();
 		}
 		Aluno aluno = this.alunos.get(matricula);
 		this.registros.add(aluno);
+		return true;
 
 	}
 
@@ -272,6 +279,16 @@ public class ControleAcademico {
 			registros.add(String.format("%d. %s", i + 1, this.registros.get(i).toString()));
 		}
 		return registros;
+	}
+	
+	public void limparDados() {
+		this.alunos = new HashMap<>();
+		this.grupos = new HashSet<>();
+		this.registros = new ArrayList<>();
+	}
+
+	public boolean temRespostas() {
+		return !registros.isEmpty();
 	}
 
 }

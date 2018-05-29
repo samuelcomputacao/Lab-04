@@ -163,12 +163,12 @@ public class Menu extends JFrame {
 		this.imprimirRegistro.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				List<String> registros = controleAcademico.listarRegistros();
-				if(registros.size()==0) {
+				if (controleAcademico.temRespostas()) {
+					List<String> registros = controleAcademico.listarRegistros();
+					new Scroll(registros, "Registro de Respostas");
+				}else {
 					erro("Não há registros realizados!");
-					return;
 				}
-				new Scroll(registros,"Registro de Respostas");
 			}
 		});
 
@@ -187,6 +187,8 @@ public class Menu extends JFrame {
 						JOptionPane.showMessageDialog(null, "ALUNO REGISTRADO!", "Sucesso",
 								JOptionPane.INFORMATION_MESSAGE);
 					} catch (AlunoNaoCadastrado e) {
+						erro(e.getMessage());
+					} catch (CampoVazioException e) {
 						erro(e.getMessage());
 					}
 				}
@@ -251,12 +253,15 @@ public class Menu extends JFrame {
 
 					if (grupo == null)
 						return;
-
-					List<String> impressao = controleAcademico.listarGrupo(grupo);
-					if (impressao == null || impressao.isEmpty()) {
-						erro("Não há alunos alocados ao grupo: " + grupo);
-					} else {
-						new Scroll(impressao,"Alunos alocados");
+					try {
+						List<String> impressao = controleAcademico.listarGrupo(grupo);
+						if (impressao == null || impressao.isEmpty()) {
+							erro("Não há alunos alocados ao grupo: " + grupo);
+						} else {
+							new Scroll(impressao, "Alunos alocados");
+						}
+					} catch (CampoVazioException e) {
+						erro(e.getMessage());
 					}
 
 					break;
@@ -285,10 +290,10 @@ public class Menu extends JFrame {
 				String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do Aluno", "Consultar",
 						JOptionPane.QUESTION_MESSAGE);
 				if (matricula != null && matricula.length() > 0) {
-					try{
-					String aluno = controleAcademico.consultar(matricula);
-					JOptionPane.showMessageDialog(null, aluno, "Consutar", JOptionPane.INFORMATION_MESSAGE);
-					}catch (AlunoNaoCadastrado e) {
+					try {
+						String aluno = controleAcademico.consultar(matricula);
+						JOptionPane.showMessageDialog(null, aluno, "Consutar", JOptionPane.INFORMATION_MESSAGE);
+					} catch (AlunoNaoCadastrado e) {
 						erro(e.getMessage());
 					}
 				}

@@ -12,7 +12,8 @@ public class Grupo {
 	private String nome;
 	private Set<Aluno> alunos;
 
-	public Grupo(String nome) {
+	public Grupo(String nome) throws CampoVazioException {
+		if(nome==null)throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
 		this.nome = nome;
 		this.alunos= new HashSet<Aluno>();
 	}
@@ -54,7 +55,7 @@ public class Grupo {
 	public List<String> listaAlocados() {
 		List<String> result = new ArrayList<>();
 		for(Aluno aluno:alunos) {
-			result.add(" * "+aluno.toString() + System.lineSeparator());
+			result.add(" * "+aluno.toString());
 		}
 		return result;
 	}

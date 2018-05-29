@@ -1,11 +1,14 @@
 package com.samuel.lab4.tests;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -14,7 +17,6 @@ import org.junit.Test;
 import com.samuel.lab4.exception.AlunoNaoCadastrado;
 import com.samuel.lab4.exception.CampoVazioException;
 import com.samuel.lab4.exception.GrupoNaoCadastrado;
-import com.samuel.lab4.model.Aluno;
 import com.samuel.lab4.model.ControleAcademico;
 
 public class ControleAcademicoTest {
@@ -24,11 +26,7 @@ public class ControleAcademicoTest {
 	@Before
 	public void testControleAcademico() throws FileNotFoundException {
 		controleAcademico = new ControleAcademico();
-		controleAcademico.uploadData();
-	}
-
-	@Test
-	public void testPersistir() {
+		controleAcademico.limparDados();
 	}
 
 	@Test
@@ -113,7 +111,7 @@ public class ControleAcademicoTest {
 		controleAcademico.cadastrarGrupo("Grupo1");
 		controleAcademico.cadastrarGrupo("Grupo2");
 		controleAcademico.cadastrarGrupo("Grupo3");
-		assertEquals(Arrays.toString(grupos), Arrays.toString(controleAcademico.nomeGrupos()));
+		assertArrayEquals(grupos, controleAcademico.nomeGrupos());
 	}
 
 	@Test
@@ -159,7 +157,7 @@ public class ControleAcademicoTest {
 	}
 	
 	@Test
-	public void testTemGruposFalse() throws CampoVazioException {
+	public void testTemGruposFalse() {
 		assertFalse(controleAcademico.temGrupos());
 	}
 
@@ -170,32 +168,96 @@ public class ControleAcademicoTest {
 	}
 	
 	@Test
-	public void testTemAlunosFalse() throws CampoVazioException {
-		assertFalse(controleAcademico.temAlunos());
-		
-		
-	}
-	
-
-	@Test
-	public void testListarGrupo() {
-	}
-
-	@Test
-	public void testRegistrarAlunoResposta() {
-	}
-
-	@Test
-	public void testListarRegistros() {
+	public void testTemAlunosFalse() {
+		assertFalse(controleAcademico.temAlunos());	
 	}
 	
 	@Test
-	public void testCarregarAlunos() {
-		
+	public void temRespostasTrue() throws CampoVazioException {
+		controleAcademico.cadastrarAluno("111", "Samuel", "Computacao");
+		controleAcademico.registrarAlunoResposta("111");
+		assertTrue(controleAcademico.temRespostas());
 	}
 	
 	@Test
-	public void testUploadData() {
+	public void temRespostasFalse(){
+		assertFalse(controleAcademico.temRespostas());
+	}
+	
+	
+	
+	@Test
+	public void testListarGrupo() throws CampoVazioException {
+		controleAcademico.cadastrarGrupo("Grupo1");
+		controleAcademico.cadastrarAluno("111", "Samuel", "Computacao");
+		controleAcademico.alocarAluno("111", "Grupo1");
+		List<String> lista = new ArrayList<>();
+		lista.add(" * 111 - Samuel - Computacao");
+		assertEquals(lista, controleAcademico.listarGrupo("Grupo1"));
+	}
+	
+	@Test(expected = CampoVazioException.class)
+	public void testListarGrupoNull() throws CampoVazioException {
+		controleAcademico.listarGrupo(null);
+	}
+	
+	@Test(expected = GrupoNaoCadastrado.class)
+	public void testListarGrupoInexistente() throws CampoVazioException {
+		controleAcademico.listarGrupo("Grupo10000");
+	}
+
+	@Test
+	public void testRegistrarAlunoResposta() throws CampoVazioException {
+		controleAcademico.cadastrarAluno("111", "Samuel", "Computacao");
+		assertTrue(controleAcademico.registrarAlunoResposta("111"));	
+	}
+	
+	@Test(expected = CampoVazioException.class)
+	public void testRegistrarAlunoRespostaNull() throws CampoVazioException {
+		controleAcademico.registrarAlunoResposta(null);
+	}
+	
+	@Test(expected = AlunoNaoCadastrado.class)
+	public void testRegistrarAlunoRespostaInexistente() throws CampoVazioException {
+		controleAcademico.registrarAlunoResposta("8080");
+	}
+
+	@Test
+	public void testListarRegistros() throws CampoVazioException {
+		controleAcademico.cadastrarAluno("111", "Samuel", "Computacao");
+		controleAcademico.cadastrarAluno("121", "Pedro", "Computacao");
+		
+		controleAcademico.registrarAlunoResposta("111");
+		controleAcademico.registrarAlunoResposta("121");
+		controleAcademico.registrarAlunoResposta("111");
+		
+		List<String> lista = new ArrayList<>();
+		lista.add("1. 111 - Samuel - Computacao");
+		lista.add("2. 121 - Pedro - Computacao");
+		lista.add("3. 111 - Samuel - Computacao");
+		
+		assertEquals(lista,controleAcademico.listarRegistros());
+	}
+	
+	@Test
+	public void testUploadDataAndPersistir() throws CampoVazioException, IOException {
+
+		controleAcademico.cadastrarAluno("111", "Samuel", "Computacao");
+		controleAcademico.cadastrarGrupo("Grupo1");
+		controleAcademico.registrarAlunoResposta("111");
+		
+		assertTrue(controleAcademico.temGrupos());
+		assertTrue(controleAcademico.temAlunos());
+		assertTrue(controleAcademico.temRespostas());
+		controleAcademico.persistir();
+		
+		controleAcademico.limparDados();
+		
+		controleAcademico.uploadData();
+		
+		assertTrue(controleAcademico.temGrupos());
+		assertTrue(controleAcademico.temAlunos());
+
 	}
 
 }
