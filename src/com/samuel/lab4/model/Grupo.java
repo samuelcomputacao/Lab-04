@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.samuel.lab4.exception.CampoVazioException;
+
 public class Grupo {
 	
 	private String nome;
@@ -44,7 +46,8 @@ public class Grupo {
 		return this.nome;
 	}
 
-	public boolean alocar(Aluno aluno) {
+	public boolean alocar(Aluno aluno) throws CampoVazioException {
+		if(aluno==null) throw new CampoVazioException("CAMPO ALUNO VAZIO");
 		return alunos.add(aluno);
 	}
 

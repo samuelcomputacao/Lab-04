@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 import com.google.gson.Gson;
 import com.samuel.lab4.exception.AlunoNaoCadastrado;
 import com.samuel.lab4.exception.CampoVazioException;
@@ -28,6 +27,13 @@ public class ControleAcademico {
 	private Set<Grupo> grupos;
 	private List<Aluno> registros;
 
+	private final String PATH_ALUNOS = new File("").getAbsolutePath() + File.separator + "files" + File.separator
+			+ "alunos.json";
+	private final String PATH_GRUPOS = new File("").getAbsolutePath() + File.separator + "files" + File.separator
+			+ "grupos.json";
+	private final String PATH_RESPOSTAS = new File("").getAbsolutePath() + File.separator + "files" + File.separator
+			+ "respostas.json";
+
 	public ControleAcademico() {
 	}
 
@@ -38,38 +44,36 @@ public class ControleAcademico {
 	}
 
 	private void persistirRespostas() throws IOException {
-		if(this.registros!=null) {
+		if (this.registros != null) {
 			Gson gson = new Gson();
-			File file = new File(
-					new File("").getAbsolutePath() + File.separator + "files" + File.separator + "respostas.json");
+			File file = new File(PATH_RESPOSTAS);
 			FileWriter fileWriter = new FileWriter(file);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.write(gson.toJson(convertToarray(this.registros)));
 			bufferedWriter.close();
 			fileWriter.close();
 		}
-		
+
 	}
 
 	private void persistirGrupos() throws IOException {
-		if(this.grupos!=null) {
+		if (this.grupos != null) {
 			Gson gson = new Gson();
-			File file = new File(
-					new File("").getAbsolutePath() + File.separator + "files" + File.separator + "grupos.json");
+			File file = new File(PATH_GRUPOS);
 			FileWriter fileWriter = new FileWriter(file);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.write(gson.toJson(convertToarray(this.grupos)));
 			bufferedWriter.close();
 			fileWriter.close();
 		}
-		
+
 	}
 
 	private Grupo[] convertToarray(Set<Grupo> setGrupos) {
 		Grupo[] grupos = new Grupo[setGrupos.size()];
 		int i = 0;
-		for(Grupo grupo: setGrupos) {
-			grupos[i++] = grupo; 
+		for (Grupo grupo : setGrupos) {
+			grupos[i++] = grupo;
 		}
 		return grupos;
 	}
@@ -77,8 +81,7 @@ public class ControleAcademico {
 	private void persistirAlunos() throws IOException {
 		if (this.alunos != null) {
 			Gson gson = new Gson();
-			File file = new File(
-					new File("").getAbsolutePath() + File.separator + "files" + File.separator + "alunos.json");
+			File file = new File(PATH_ALUNOS);
 			FileWriter fileWriter = new FileWriter(file);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			bufferedWriter.write(gson.toJson(convertToarray(this.alunos.values())));
@@ -97,7 +100,7 @@ public class ControleAcademico {
 		}
 		return result;
 	}
-	
+
 	public boolean cadastrarAluno(String matricula, String nome, String curso) throws CampoVazioException {
 		if (matricula == null || matricula.trim().length() == 0) {
 			throw new CampoVazioException("MATRÍCULA NÃO ESPECIFICADA");
@@ -121,8 +124,7 @@ public class ControleAcademico {
 	public void carregarAlunos() throws FileNotFoundException {
 		this.alunos = new HashMap<String, Aluno>();
 		Gson gson = new Gson();
-		File file = new File(
-				new File("").getAbsolutePath() + File.separator + "files" + File.separator + "alunos.json");
+		File file = new File(PATH_ALUNOS);
 		if (file.exists()) {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -138,18 +140,22 @@ public class ControleAcademico {
 
 	public String consultar(String matricula) {
 		Aluno aluno = this.alunos.get(matricula);
-		if (aluno != null) {
-			return aluno.toString();
+		if (aluno == null) {
+			throw new AlunoNaoCadastrado();
 		}
-		return null;
+		return aluno.toString();
 	}
 
-	public void cadastrarGrupo(String nome) {
+	public boolean cadastrarGrupo(String nome) throws CampoVazioException {
+		if(nome==null) {
+			throw new CampoVazioException("CAMPO GRUPO VAZIO");
+		}
 		Grupo grupo = new Grupo(nome);
 		boolean cadastrou = this.grupos.add(grupo);
 		if (!cadastrou) {
 			throw new IllegalArgumentException("GRUPO JÁ CADASTRADO!");
 		}
+		return true;
 	}
 
 	public void uploadData() throws FileNotFoundException {
@@ -162,14 +168,15 @@ public class ControleAcademico {
 		this.registros = new ArrayList<Aluno>();
 		Gson gson = new Gson();
 
-		File file = new File(
-				new File("").getAbsolutePath() + File.separator + "files" + File.separator + "respostas.json");
+		File file = new File(PATH_RESPOSTAS);
 		if (file.exists()) {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			Aluno[] alunos = gson.fromJson(bufferedReader, Aluno[].class);
-			for (Aluno aluno : alunos) {
-				this.registros.add(aluno);
+			if (alunos != null) {
+				for (Aluno aluno : alunos) {
+					this.registros.add(aluno);
+				}
 			}
 		}
 
@@ -179,59 +186,64 @@ public class ControleAcademico {
 		this.grupos = new HashSet<Grupo>();
 		Gson gson = new Gson();
 
-		File file = new File(
-				new File("").getAbsolutePath() + File.separator + "files" + File.separator + "grupos.json");
+		File file = new File(PATH_GRUPOS);
 		if (file.exists()) {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			Grupo[] grupos = gson.fromJson(bufferedReader, Grupo[].class);
-			for (Grupo grupo : grupos) {
-				this.grupos.add(grupo);
+			if (grupos != null) {
+				for (Grupo grupo : grupos) {
+					this.grupos.add(grupo);
+				}
 			}
 		}
 	}
 
 	public String[] nomeGrupos() {
-		String [] result = new String[this.grupos.size()];
+		String[] result = new String[this.grupos.size()];
 		int i = 0;
-		for(Grupo grupo:this.grupos) {
-			result[i++]= grupo.getNome();
+		for (Grupo grupo : this.grupos) {
+			result[i++] = grupo.getNome();
 		}
 		return result;
 	}
 
-	public boolean alocarAluno(String matricula, String nomeGrupo) {
-		if(!this.alunos.containsKey(matricula)) {
-			throw new AlunoNaoCadastrado() ;
+	public boolean alocarAluno(String matricula, String nomeGrupo) throws CampoVazioException {
+		if(matricula==null) throw new CampoVazioException("CAMPO MATRÍCULA VAZIO");
+		if(nomeGrupo==null) throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
+		
+		if (!this.alunos.containsKey(matricula)) {
+			throw new AlunoNaoCadastrado();
 		}
-		
+
 		Aluno aluno = this.alunos.get(matricula);
-		
+
 		Grupo grupo = buscaGrupo(nomeGrupo);
-		
-		if(grupo==null){
+
+		if (grupo == null) {
 			throw new GrupoNaoCadastrado();
 		}
-		
+
 		return grupo.alocar(aluno);
 	}
 
 	private Grupo buscaGrupo(String nomeGrupo) {
-		for(Grupo grupo: grupos) {
-			if(grupo.getNome().equals(nomeGrupo)) return grupo;
+		for (Grupo grupo : grupos) {
+			if (grupo.getNome().equals(nomeGrupo))
+				return grupo;
 		}
 		return null;
 	}
 
 	public boolean temGrupos() {
-		if(this.grupos.size()==0) {
+		if (this.grupos.size() == 0) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean temAlunos() {
-		if(this.alunos.size()==0) {
+		if (this.alunos.size() == 0) {
 			return false;
 		}
 		return true;
@@ -239,25 +251,25 @@ public class ControleAcademico {
 
 	public List<String> listarGrupo(String nomeGrupo) {
 		Grupo grupo = buscaGrupo(nomeGrupo);
-		if(grupo!=null) {
+		if (grupo != null) {
 			return grupo.listaAlocados();
 		}
 		return null;
 	}
 
 	public void registrarAlunoResposta(String matricula) {
-		if(!this.alunos.containsKey(matricula)) {
+		if (!this.alunos.containsKey(matricula)) {
 			throw new AlunoNaoCadastrado();
 		}
 		Aluno aluno = this.alunos.get(matricula);
 		this.registros.add(aluno);
-		
+
 	}
 
 	public List<String> listarRegistros() {
 		List<String> registros = new ArrayList<>();
-		for(int i = 0; i < this.registros.size(); i++) {
-			registros.add(String.format("%d. %s", i+1,this.registros.get(i).toString()));
+		for (int i = 0; i < this.registros.size(); i++) {
+			registros.add(String.format("%d. %s", i + 1, this.registros.get(i).toString()));
 		}
 		return registros;
 	}

@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.samuel.lab4.exception.AlunoNaoCadastrado;
+import com.samuel.lab4.exception.CampoVazioException;
 import com.samuel.lab4.exception.GrupoNaoCadastrado;
 import com.samuel.lab4.model.ControleAcademico;
 
@@ -234,6 +235,8 @@ public class Menu extends JFrame {
 							erro(e.getMessage());
 						} catch (GrupoNaoCadastrado e) {
 							erro(e.getMessage());
+						} catch (CampoVazioException e) {
+							erro(e.getMessage());
 						}
 					}
 					break;
@@ -282,11 +285,11 @@ public class Menu extends JFrame {
 				String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do Aluno", "Consultar",
 						JOptionPane.QUESTION_MESSAGE);
 				if (matricula != null && matricula.length() > 0) {
+					try{
 					String aluno = controleAcademico.consultar(matricula);
-					if (aluno != null) {
-						JOptionPane.showMessageDialog(null, aluno, "Consutar", JOptionPane.INFORMATION_MESSAGE);
-					} else {
-						erro("Aluno não cadastrado.");
+					JOptionPane.showMessageDialog(null, aluno, "Consutar", JOptionPane.INFORMATION_MESSAGE);
+					}catch (AlunoNaoCadastrado e) {
+						erro(e.getMessage());
 					}
 				}
 			}
@@ -313,6 +316,8 @@ public class Menu extends JFrame {
 						JOptionPane.showMessageDialog(null, "CADASTRO REALIZADO!", "Sucesso",
 								JOptionPane.INFORMATION_MESSAGE);
 					} catch (IllegalArgumentException e) {
+						erro(e.getMessage());
+					} catch (CampoVazioException e) {
 						erro(e.getMessage());
 					}
 				}
