@@ -17,8 +17,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.Gson;
+import com.samuel.lab4.exception.AlunoJaCadastrado;
 import com.samuel.lab4.exception.AlunoNaoCadastrado;
 import com.samuel.lab4.exception.CampoVazioException;
+import com.samuel.lab4.exception.GrupoJaCadastrado;
 import com.samuel.lab4.exception.GrupoNaoCadastrado;
 
 /**
@@ -159,14 +161,13 @@ public class ControleAcademico {
 	 * @param nome : Uma String representando o nome do aluno
 	 * @param curso : Uma String representando O curso feito pelo aluno
 	 * @return Um valor bolleano indicando se o aluno foi cadastrado ou não
-	 * @throws CampoVazioException : Uma exceção que é lancada quando um dos parâmetro é passado como nulo
 	 */
 	public boolean cadastrarAluno(String matricula, String nome, String curso){
 		if (matricula == null || matricula.trim().length() == 0) {
 			throw new CampoVazioException("MATRÍCULA NÃO ESPECIFICADA");
 		}
 		if (this.alunos.containsKey(matricula)) {
-			throw new IllegalArgumentException("MATRÍCULA JÁ CADASTRADA!");
+			throw new AlunoJaCadastrado();
 		}
 		Aluno aluno = new Aluno(matricula, nome, curso);
 		this.alunos.put(matricula, aluno);
@@ -211,6 +212,9 @@ public class ControleAcademico {
 	 * @return Uma String com a representação textual do aluno
 	 */
 	public String consultar(String matricula) {
+		if(matricula==null) {
+			throw new CampoVazioException("CAMPO MATRÍCULA VAZIO");
+		}
 		Aluno aluno = this.alunos.get(matricula);
 		if (aluno == null) {
 			throw new AlunoNaoCadastrado();
@@ -222,7 +226,6 @@ public class ControleAcademico {
 	 * Método responsável por cadastrar um grupo no sistema
 	 * @param nome : Uma String representando o nome do grupo 
 	 * @return Um valor bolleano representando de foi possível cadastrar o grupo ou não
-	 * @throws CampoVazioException : Uma exceção que é lançada quando o nome passado como parâmetro é nulo
 	 */
 	public boolean cadastrarGrupo(String nome){
 		if(nome==null) {
@@ -231,7 +234,7 @@ public class ControleAcademico {
 		Grupo grupo = new Grupo(nome);
 		boolean cadastrou = this.grupos.add(grupo);
 		if (!cadastrou) {
-			throw new IllegalArgumentException("GRUPO JÁ CADASTRADO!");
+			throw new GrupoJaCadastrado();
 		}
 		return true;
 	}
@@ -307,7 +310,6 @@ public class ControleAcademico {
 	 * @param matricula : Uma String representando a matrícula do aluno que será alocado
 	 * @param nomeGrupo : Uma String representando o nome do grupo onde o aluno será alocado
 	 * @return Um valor bolleano representando se foi possível alocar o aluno ou não
-	 * @throws CampoVazioException : Uma exceção que é lançada quando algum dos campos passado como parâmetro são nulos
 	 */
 	public boolean alocarAluno(String matricula, String nomeGrupo){
 		if(matricula==null) throw new CampoVazioException("CAMPO MATRÍCULA VAZIO");
@@ -367,7 +369,6 @@ public class ControleAcademico {
 	 * Método responsável por criar uma lista de String representado todos os alunos alocados a um grupo
 	 * @param nomeGrupo : Uma String representando o nome do grupo que será analizado
 	 * @return Uma lista de String com todos os alunos alocados ao grupo
-	 * @throws CampoVazioException : Uma exceção que é lançada quando algum campo passado com parâmetro é nulo 
 	 */
 	public List<String> listarGrupo(String nomeGrupo){
 		if(nomeGrupo==null) {
@@ -384,7 +385,6 @@ public class ControleAcademico {
 	 * Método responsável por realizar o registro de que um aluno respondeu uma questão 
 	 * @param matricula : Uma String representando a matrícula do aluno que respondeu a questão
 	 * @return Um valor bolleano indicando se foi possível realizar o registro
-	 * @throws CampoVazioException : Uma exceção que é lançada quando algum campo passado com parâmetro é nulo 
 	 */
 	public boolean registrarAlunoResposta(String matricula){
 		if(matricula==null) {
