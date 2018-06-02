@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.samuel.lab4.exception.CampoVazioException;
 import com.samuel.lab4.model.ControleAcademico;
 
 public class NovoAluno extends JFrame {
@@ -45,7 +44,7 @@ public class NovoAluno extends JFrame {
 
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension scrnsize = toolkit.getScreenSize();
-		centro = new Point(Integer.valueOf((int) ((scrnsize.getWidth() - getWidth()) / 3)),
+		centro = new Point(Integer.valueOf((int) ((scrnsize.getWidth() - getWidth()) / 2)),
 				Integer.valueOf((int) ((scrnsize.getHeight() - getHeight()) / 2)));
 		setLocation(centro);
 		setResizable(false);
@@ -166,9 +165,7 @@ public class NovoAluno extends JFrame {
 								JOptionPane.INFORMATION_MESSAGE);
 					}
 					finalizarFrame();
-				} catch (CampoVazioException e) {
-					erro(e.getMessage());
-				}catch (IllegalArgumentException e) {
+				} catch (RuntimeException e) {
 					erro(e.getMessage());
 				}
 

@@ -336,6 +336,7 @@ public class ControleAcademico {
 	 * @return Um grupo de nome igual ao recebido como parâmetro
 	 */
 	private Grupo buscaGrupo(String nomeGrupo) {
+		if(nomeGrupo==null) throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
 		for (Grupo grupo : grupos) {
 			if (grupo.getNome().equals(nomeGrupo))
 				return grupo;

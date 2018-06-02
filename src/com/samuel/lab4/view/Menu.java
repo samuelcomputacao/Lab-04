@@ -26,7 +26,6 @@ import javax.swing.JScrollPane;
 
 import com.samuel.lab4.exception.AlunoNaoCadastrado;
 import com.samuel.lab4.exception.CampoVazioException;
-import com.samuel.lab4.exception.GrupoNaoCadastrado;
 import com.samuel.lab4.model.ControleAcademico;
 
 public class Menu extends JFrame {
@@ -166,8 +165,8 @@ public class Menu extends JFrame {
 				if (controleAcademico.temRespostas()) {
 					List<String> registros = controleAcademico.listarRegistros();
 					new Scroll(registros, "Registro de Respostas");
-				}else {
-					erro("Não há registros realizados!");
+				} else {
+					mensagemException("Não há registros realizados!");
 				}
 			}
 		});
@@ -186,10 +185,8 @@ public class Menu extends JFrame {
 						controleAcademico.registrarAlunoResposta(matricula);
 						JOptionPane.showMessageDialog(null, "ALUNO REGISTRADO!", "Sucesso",
 								JOptionPane.INFORMATION_MESSAGE);
-					} catch (AlunoNaoCadastrado e) {
-						erro(e.getMessage());
-					} catch (CampoVazioException e) {
-						erro(e.getMessage());
+					} catch (RuntimeException e) {
+						mensagemException(e.getMessage());
 					}
 				}
 
@@ -210,11 +207,11 @@ public class Menu extends JFrame {
 				switch (i) {
 				case 0:
 					if (!controleAcademico.temAlunos()) {
-						erro("Não há alunos cadastrados");
+						mensagemException("Não há alunos cadastrados");
 						return;
 					}
 					if (!controleAcademico.temGrupos()) {
-						erro("Não há Grupos cadastrados");
+						mensagemException("Não há Grupos cadastrados");
 						return;
 					}
 					String matricula = null;
@@ -230,21 +227,21 @@ public class Menu extends JFrame {
 						if (grupo == null)
 							return;
 						try {
-							controleAcademico.alocarAluno(matricula, grupo);
-							JOptionPane.showMessageDialog(null, "ALUNO ALOCADO!", "Sucesso",
-									JOptionPane.INFORMATION_MESSAGE);
-						} catch (AlunoNaoCadastrado e) {
-							erro(e.getMessage());
-						} catch (GrupoNaoCadastrado e) {
-							erro(e.getMessage());
-						} catch (CampoVazioException e) {
-							erro(e.getMessage());
+							boolean alocou = controleAcademico.alocarAluno(matricula, grupo);
+							if (alocou) {
+								JOptionPane.showMessageDialog(null, "ALUNO ALOCADO!", "Sucesso",
+										JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								mensagemException("O aluno já está alocado ao grupo");
+							}
+						} catch (RuntimeException e) {
+							mensagemException(e.getMessage());
 						}
 					}
 					break;
 				case 1:
 					if (!controleAcademico.temGrupos()) {
-						erro("Não há Grupos cadastrados");
+						mensagemException("Não há Grupos cadastrados");
 						return;
 					}
 					String[] grupos = controleAcademico.nomeGrupos();
@@ -256,12 +253,12 @@ public class Menu extends JFrame {
 					try {
 						List<String> impressao = controleAcademico.listarGrupo(grupo);
 						if (impressao == null || impressao.isEmpty()) {
-							erro("Não há alunos alocados ao grupo: " + grupo);
+							mensagemException("Não há alunos alocados ao grupo: " + grupo);
 						} else {
 							new Scroll(impressao, "Alunos alocados");
 						}
 					} catch (CampoVazioException e) {
-						erro(e.getMessage());
+						mensagemException(e.getMessage());
 					}
 
 					break;
@@ -294,7 +291,7 @@ public class Menu extends JFrame {
 						String aluno = controleAcademico.consultar(matricula);
 						JOptionPane.showMessageDialog(null, aluno, "Consutar", JOptionPane.INFORMATION_MESSAGE);
 					} catch (AlunoNaoCadastrado e) {
-						erro(e.getMessage());
+						mensagemException(e.getMessage());
 					}
 				}
 			}
@@ -320,10 +317,8 @@ public class Menu extends JFrame {
 						controleAcademico.cadastrarGrupo(nome);
 						JOptionPane.showMessageDialog(null, "CADASTRO REALIZADO!", "Sucesso",
 								JOptionPane.INFORMATION_MESSAGE);
-					} catch (IllegalArgumentException e) {
-						erro(e.getMessage());
-					} catch (CampoVazioException e) {
-						erro(e.getMessage());
+					} catch (RuntimeException e) {
+						mensagemException(e.getMessage());
 					}
 				}
 			}
@@ -331,7 +326,7 @@ public class Menu extends JFrame {
 
 	}
 
-	public static void erro(String msg) {
+	public static void mensagemException(String msg) {
 		JOptionPane.showMessageDialog(null, msg, "Erro", JOptionPane.ERROR_MESSAGE);
 	}
 

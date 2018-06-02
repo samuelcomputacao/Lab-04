@@ -22,7 +22,7 @@ public class Main {
 			academico.uploadData();
 			new Menu(academico);
 		}catch (FileNotFoundException e) {
-			Menu.erro(e.getMessage());
+			Menu.mensagemException(e.getMessage());
 		}
 		
 	}
