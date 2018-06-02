@@ -30,7 +30,7 @@ public class Grupo {
 	 * @param nome : Uma String representando o nome do grupo
 	 * @throws CampoVazioException : Uma exceção que é lançada quando o nome do grupo recebido é nulo
 	 */
-	public Grupo(String nome) throws CampoVazioException {
+	public Grupo(String nome) {
 		if(nome==null)throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
 		this.nome = nome;
 		this.alunos= new HashSet<Aluno>();
@@ -83,7 +83,7 @@ public class Grupo {
 	 * @return Um valor bolleano que indica se foi possível alocar o aluno ou não
 	 * @throws CampoVazioException : Retorna esta exceção se o aluno passado como parâmetro for nulo
 	 */
-	public boolean alocar(Aluno aluno) throws CampoVazioException {
+	public boolean alocar(Aluno aluno) {
 		if(aluno==null) throw new CampoVazioException("CAMPO ALUNO VAZIO");
 		return alunos.add(aluno);
 	}

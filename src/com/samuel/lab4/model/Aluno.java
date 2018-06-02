@@ -32,7 +32,7 @@ public class Aluno {
 	 * @param curso : Uma String representando o curso realizado pelo aluno
 	 * @throws CampoVazioException : É lançada quando alguns dos parâmetros é recebido nulo ou com tamanho 0 
 	 */ 
-	public Aluno(String matricula,String nome, String curso) throws CampoVazioException {
+	public Aluno(String matricula,String nome, String curso){
 		
 		if(nome==null || nome.trim().length()==0) {
 			throw new CampoVazioException("NOME NÃO ESPECIFICADO");

@@ -161,7 +161,7 @@ public class ControleAcademico {
 	 * @return Um valor bolleano indicando se o aluno foi cadastrado ou não
 	 * @throws CampoVazioException : Uma exceção que é lancada quando um dos parâmetro é passado como nulo
 	 */
-	public boolean cadastrarAluno(String matricula, String nome, String curso) throws CampoVazioException {
+	public boolean cadastrarAluno(String matricula, String nome, String curso){
 		if (matricula == null || matricula.trim().length() == 0) {
 			throw new CampoVazioException("MATRÍCULA NÃO ESPECIFICADA");
 		}
@@ -224,7 +224,7 @@ public class ControleAcademico {
 	 * @return Um valor bolleano representando de foi possível cadastrar o grupo ou não
 	 * @throws CampoVazioException : Uma exceção que é lançada quando o nome passado como parâmetro é nulo
 	 */
-	public boolean cadastrarGrupo(String nome) throws CampoVazioException {
+	public boolean cadastrarGrupo(String nome){
 		if(nome==null) {
 			throw new CampoVazioException("CAMPO GRUPO VAZIO");
 		}
@@ -309,7 +309,7 @@ public class ControleAcademico {
 	 * @return Um valor bolleano representando se foi possível alocar o aluno ou não
 	 * @throws CampoVazioException : Uma exceção que é lançada quando algum dos campos passado como parâmetro são nulos
 	 */
-	public boolean alocarAluno(String matricula, String nomeGrupo) throws CampoVazioException {
+	public boolean alocarAluno(String matricula, String nomeGrupo){
 		if(matricula==null) throw new CampoVazioException("CAMPO MATRÍCULA VAZIO");
 		if(nomeGrupo==null) throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
 		
@@ -369,7 +369,7 @@ public class ControleAcademico {
 	 * @return Uma lista de String com todos os alunos alocados ao grupo
 	 * @throws CampoVazioException : Uma exceção que é lançada quando algum campo passado com parâmetro é nulo 
 	 */
-	public List<String> listarGrupo(String nomeGrupo) throws CampoVazioException {
+	public List<String> listarGrupo(String nomeGrupo){
 		if(nomeGrupo==null) {
 			throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
 		}
@@ -386,7 +386,7 @@ public class ControleAcademico {
 	 * @return Um valor bolleano indicando se foi possível realizar o registro
 	 * @throws CampoVazioException : Uma exceção que é lançada quando algum campo passado com parâmetro é nulo 
 	 */
-	public boolean registrarAlunoResposta(String matricula) throws CampoVazioException {
+	public boolean registrarAlunoResposta(String matricula){
 		if(matricula==null) {
 			throw new CampoVazioException("CAMPO MATRÍCULA VAZIO");
 		}
