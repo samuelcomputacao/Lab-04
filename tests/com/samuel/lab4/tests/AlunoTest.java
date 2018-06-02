@@ -15,22 +15,22 @@ public class AlunoTest {
 	private Aluno aluno;
 
 	@Before
-	public void TestConstrutor() throws CampoVazioException {
+	public void TestConstrutor(){
 		aluno = new Aluno("111", "Samuel", "Computacao");
 	}
 
 	@Test(expected = CampoVazioException.class)
-	public void TestContrutorMatriculaNull() throws CampoVazioException {
+	public void TestContrutorMatriculaNull(){
 		aluno = new Aluno(null, "Samuel", "Computacao");
 	}
 
 	@Test(expected = CampoVazioException.class)
-	public void TestContrutorNomeNull() throws CampoVazioException {
+	public void TestContrutorNomeNull(){
 		aluno = new Aluno("111", null, "Computacao");
 	}
 
 	@Test(expected = CampoVazioException.class)
-	public void TestContrutorCursoNull() throws CampoVazioException {
+	public void TestContrutorCursoNull(){
 		aluno = new Aluno("111", "Samuel", null);
 	}
 
@@ -41,26 +41,26 @@ public class AlunoTest {
 	}
 
 	@Test
-	public void testEquals() throws CampoVazioException {
+	public void testEquals(){
 		Aluno alunoTest = new Aluno("111", "Samuel", "Computacao");
 		assertTrue(alunoTest.equals(aluno));
 	}
 
 	@Test
-	public void testEqualsMatricula() throws CampoVazioException {
+	public void testEqualsMatricula(){
 		Aluno alunoTest = new Aluno("222", "Samuel", "Computacao");
 		assertFalse(alunoTest.equals(aluno));
 
 	}
 
 	@Test
-	public void testEqualsNome() throws CampoVazioException {
+	public void testEqualsNome(){
 		Aluno alunoTest = new Aluno("111", "Antônio", "Computacao");
 		assertTrue(alunoTest.equals(aluno));
 	}
 
 	@Test
-	public void testEqualsCurso() throws CampoVazioException {
+	public void testEqualsCurso(){
 		Aluno alunoTest = new Aluno("111", "Samuel", "Eng. Elétrica");
 		assertTrue(alunoTest.equals(aluno));
 	}
