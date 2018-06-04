@@ -17,11 +17,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.Gson;
-import com.samuel.lab4.exception.AlunoJaCadastrado;
-import com.samuel.lab4.exception.AlunoNaoCadastrado;
+import com.samuel.lab4.exception.AlunoJaCadastradoException;
+import com.samuel.lab4.exception.AlunoNaoCadastradoException;
 import com.samuel.lab4.exception.CampoVazioException;
-import com.samuel.lab4.exception.GrupoJaCadastrado;
-import com.samuel.lab4.exception.GrupoNaoCadastrado;
+import com.samuel.lab4.exception.GrupoJaCadastradoException;
+import com.samuel.lab4.exception.GrupoNaoCadastradoException;
 
 /**
  * Esta é a classe principal do sistema. Ela é reponsável por realizar todas as funcionalizades.
@@ -167,7 +167,7 @@ public class ControleAcademico {
 			throw new CampoVazioException("MATRÍCULA NÃO ESPECIFICADA");
 		}
 		if (this.alunos.containsKey(matricula)) {
-			throw new AlunoJaCadastrado();
+			throw new AlunoJaCadastradoException();
 		}
 		Aluno aluno = new Aluno(matricula, nome, curso);
 		this.alunos.put(matricula, aluno);
@@ -217,7 +217,7 @@ public class ControleAcademico {
 		}
 		Aluno aluno = this.alunos.get(matricula);
 		if (aluno == null) {
-			throw new AlunoNaoCadastrado();
+			throw new AlunoNaoCadastradoException();
 		}
 		return aluno.toString();
 	}
@@ -234,7 +234,7 @@ public class ControleAcademico {
 		Grupo grupo = new Grupo(nome);
 		boolean cadastrou = this.grupos.add(grupo);
 		if (!cadastrou) {
-			throw new GrupoJaCadastrado();
+			throw new GrupoJaCadastradoException();
 		}
 		return true;
 	}
@@ -316,7 +316,7 @@ public class ControleAcademico {
 		if(nomeGrupo==null) throw new CampoVazioException("CAMPO NOME DO GRUPO VAZIO");
 		
 		if (!this.alunos.containsKey(matricula)) {
-			throw new AlunoNaoCadastrado();
+			throw new AlunoNaoCadastradoException();
 		}
 
 		Aluno aluno = this.alunos.get(matricula);
@@ -324,7 +324,7 @@ public class ControleAcademico {
 		Grupo grupo = buscaGrupo(nomeGrupo);
 
 		if (grupo == null) {
-			throw new GrupoNaoCadastrado();
+			throw new GrupoNaoCadastradoException();
 		}
 
 		return grupo.alocar(aluno);
@@ -377,7 +377,7 @@ public class ControleAcademico {
 		}
 		Grupo grupo = buscaGrupo(nomeGrupo);
 		if (grupo == null) {
-			throw new GrupoNaoCadastrado();
+			throw new GrupoNaoCadastradoException();
 		}
 		return grupo.listaAlocados();
 	}
@@ -392,7 +392,7 @@ public class ControleAcademico {
 			throw new CampoVazioException("CAMPO MATRÍCULA VAZIO");
 		}
 		if (!this.alunos.containsKey(matricula)) {
-			throw new AlunoNaoCadastrado();
+			throw new AlunoNaoCadastradoException();
 		}
 		Aluno aluno = this.alunos.get(matricula);
 		this.registros.add(aluno);

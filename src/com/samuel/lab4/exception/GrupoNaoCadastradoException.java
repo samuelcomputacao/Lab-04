@@ -1,10 +1,10 @@
 package com.samuel.lab4.exception;
 
-public class GrupoNaoCadastrado  extends IllegalArgumentException{
+public class GrupoNaoCadastradoException  extends IllegalArgumentException{
 
 	private static final long serialVersionUID = 1L;
 
-	public GrupoNaoCadastrado() {
+	public GrupoNaoCadastradoException() {
 		super("Grupo não cadastrado.");
 	}
 	

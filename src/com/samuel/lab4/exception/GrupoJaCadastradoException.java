@@ -1,10 +1,10 @@
 package com.samuel.lab4.exception;
 
-public class GrupoJaCadastrado extends IllegalArgumentException {
+public class GrupoJaCadastradoException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public GrupoJaCadastrado() {
+	public GrupoJaCadastradoException() {
 		super("GRUPO JÁ CADASTRADO!");
 	}
 

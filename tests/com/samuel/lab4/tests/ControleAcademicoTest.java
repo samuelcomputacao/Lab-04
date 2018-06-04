@@ -13,11 +13,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.samuel.lab4.exception.AlunoJaCadastrado;
-import com.samuel.lab4.exception.AlunoNaoCadastrado;
+import com.samuel.lab4.exception.AlunoJaCadastradoException;
+import com.samuel.lab4.exception.AlunoNaoCadastradoException;
 import com.samuel.lab4.exception.CampoVazioException;
-import com.samuel.lab4.exception.GrupoJaCadastrado;
-import com.samuel.lab4.exception.GrupoNaoCadastrado;
+import com.samuel.lab4.exception.GrupoJaCadastradoException;
+import com.samuel.lab4.exception.GrupoNaoCadastradoException;
 import com.samuel.lab4.model.ControleAcademico;
 
 /**
@@ -52,7 +52,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa o cadastro de um aluno quando ele já esta cadastrado
 	 */
-	@Test(expected = AlunoJaCadastrado.class)
+	@Test(expected = AlunoJaCadastradoException.class)
 	public void testCadastrarAlunoRepetido(){
 		assertTrue(controleAcademico.cadastrarAluno("111", "Samuel", "Computacao"));
 		controleAcademico.cadastrarAluno("111", "Samuel", "Computacao");
@@ -107,7 +107,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa a consulta de um aluno não cadastrado	
 	 */
-	@Test(expected = AlunoNaoCadastrado.class)
+	@Test(expected = AlunoNaoCadastradoException.class)
 	public void testConsultarInexistente(){;
 		controleAcademico.consultar("1000000");
 	}
@@ -131,7 +131,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa o cadastro de um grupo que já está cadastrado
 	 */
-	@Test(expected=GrupoJaCadastrado.class)
+	@Test(expected=GrupoJaCadastradoException.class)
 	public void testCadastrarGrupoRepetido(){
 		controleAcademico.cadastrarGrupo("Lista");
 		controleAcademico.cadastrarGrupo("Lista");
@@ -140,7 +140,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa o cadastro de um grupo com o nome igual, mas com o nome em minúsculo 
 	 */
-	@Test(expected=GrupoJaCadastrado.class)
+	@Test(expected=GrupoJaCadastradoException.class)
 	public void testCadastrarGrupoRepetidoLowerCase(){
 		controleAcademico.cadastrarGrupo("Lista");
 		controleAcademico.cadastrarGrupo("lista");
@@ -149,7 +149,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa o cadastro de um grupo com o nome igual, mas com o nome em maiúsculo
 	 */
-	@Test(expected=GrupoJaCadastrado.class)
+	@Test(expected=GrupoJaCadastradoException.class)
 	public void testCadastrarGrupoRepetidoUpperCase(){
 		controleAcademico.cadastrarGrupo("lista");
 		controleAcademico.cadastrarGrupo("LISTA");
@@ -215,7 +215,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa a alocação de um aluno a um grupo quando o aluno ainda não está cadastrado
 	 */
-	@Test(expected = AlunoNaoCadastrado.class)
+	@Test(expected = AlunoNaoCadastradoException.class)
 	public void testAlocarAlunoInexistente(){
 		controleAcademico.alocarAluno("111", "Grupo1");
 	}
@@ -223,7 +223,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa a alocação de um aluno a um grupo que ainda não foi cadastrado
 	 */
-	@Test(expected = GrupoNaoCadastrado.class)
+	@Test(expected = GrupoNaoCadastradoException.class)
 	public void testAlocarGrupoInexistente(){
 		controleAcademico.cadastrarAluno("111", "Samuel", "Computacao");
 		controleAcademico.alocarAluno("111", "Grupo1");
@@ -305,7 +305,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa o listamento de um grupo quando ele ainda não está cadastrado
 	 */
-	@Test(expected = GrupoNaoCadastrado.class)
+	@Test(expected = GrupoNaoCadastradoException.class)
 	public void testListarGrupoInexistente(){
 		controleAcademico.listarGrupo("Grupo10000");
 	}
@@ -330,7 +330,7 @@ public class ControleAcademicoTest {
 	/**
 	 * Testa o registro de respostas a um aluno que ainda não foi cadastrados
 	 */
-	@Test(expected = AlunoNaoCadastrado.class)
+	@Test(expected = AlunoNaoCadastradoException.class)
 	public void testRegistrarAlunoRespostaInexistente(){
 		controleAcademico.registrarAlunoResposta("8080");
 	}

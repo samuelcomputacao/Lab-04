@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.samuel.lab4.exception.AlunoNaoCadastrado;
+import com.samuel.lab4.exception.AlunoNaoCadastradoException;
 import com.samuel.lab4.exception.CampoVazioException;
 import com.samuel.lab4.model.ControleAcademico;
 
@@ -290,7 +290,7 @@ public class Menu extends JFrame {
 					try {
 						String aluno = controleAcademico.consultar(matricula);
 						JOptionPane.showMessageDialog(null, aluno, "Consutar", JOptionPane.INFORMATION_MESSAGE);
-					} catch (AlunoNaoCadastrado e) {
+					} catch (AlunoNaoCadastradoException e) {
 						mensagemException(e.getMessage());
 					}
 				}

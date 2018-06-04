@@ -1,10 +1,10 @@
 package com.samuel.lab4.exception;
 
-public class AlunoJaCadastrado extends IllegalArgumentException {
+public class AlunoJaCadastradoException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public AlunoJaCadastrado() {
+	public AlunoJaCadastradoException() {
 		super("ALUNO JÁ CADASTRADO!");
 	}
 
