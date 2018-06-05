@@ -7,5 +7,4 @@ public class GrupoJaCadastradoException extends IllegalArgumentException {
 	public GrupoJaCadastradoException() {
 		super("GRUPO JÁ CADASTRADO!");
 	}
-
 }

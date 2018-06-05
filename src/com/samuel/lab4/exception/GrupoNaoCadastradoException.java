@@ -7,8 +7,4 @@ public class GrupoNaoCadastradoException  extends IllegalArgumentException{
 	public GrupoNaoCadastradoException() {
 		super("Grupo não cadastrado.");
 	}
-	
-	
-	
-
 }
