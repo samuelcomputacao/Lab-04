@@ -7,5 +7,4 @@ public class AlunoJaCadastradoException extends IllegalArgumentException {
 	public AlunoJaCadastradoException() {
 		super("ALUNO JÁ CADASTRADO!");
 	}
-
 }
