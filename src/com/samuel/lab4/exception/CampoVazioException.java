@@ -7,6 +7,4 @@ public class CampoVazioException extends RuntimeException {
 	public CampoVazioException(String msg) {
 		super(msg);
 	}
-	
-
 }
