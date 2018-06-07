@@ -19,6 +19,11 @@ import javax.swing.JTextField;
 
 import com.samuel.lab4.model.ControleAcademico;
 
+/**
+ * 
+ * @author Samuel Pereira de Vasconcelos
+ *
+ */
 public class NovoAluno extends JFrame {
 
 	/**

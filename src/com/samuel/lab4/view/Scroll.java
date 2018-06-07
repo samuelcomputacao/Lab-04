@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 /**
- * Interface gráfica responsável por imprimir uma lista de contatos para o usuário
  * @author Samuel Pereira de Vasconcelos
  *
  */

@@ -28,6 +28,11 @@ import com.samuel.lab4.exception.AlunoNaoCadastradoException;
 import com.samuel.lab4.exception.CampoVazioException;
 import com.samuel.lab4.model.ControleAcademico;
 
+/**
+ * 
+ * @author Samuel Pereira de Vasconcelos
+ *
+ */
 public class Menu extends JFrame {
 
 	private final Container painelPrincipal = getContentPane();
