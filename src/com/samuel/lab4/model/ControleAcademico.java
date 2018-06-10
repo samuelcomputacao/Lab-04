@@ -245,7 +245,7 @@ public class ControleAcademico {
 	 */
 	public void uploadData() throws FileNotFoundException {
 		this.carregarAlunos();
-		this.carregargrupos();
+		this.carregarGrupos();
 		this.carregarRespostas();
 	}
 	
@@ -275,7 +275,7 @@ public class ControleAcademico {
 	 * Método responsável por carregar todos os grupos do sistema que estão salvos em arquivo
 	 * @throws FileNotFoundException : Uma exceção que é lançada quando o arquivo dos grupos não pode ser encontrado
 	 */
-	private void carregargrupos() throws FileNotFoundException {
+	private void carregarGrupos() throws FileNotFoundException {
 		this.grupos = new HashSet<Grupo>();
 		Gson gson = new Gson();
 

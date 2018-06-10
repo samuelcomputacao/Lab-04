@@ -325,6 +325,8 @@ public class Menu extends JFrame {
 					} catch (RuntimeException e) {
 						mensagemException(e.getMessage());
 					}
+				}else {
+					mensagemException("Nome do grupo vazio!!");
 				}
 			}
 		});
